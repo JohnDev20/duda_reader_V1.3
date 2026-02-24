@@ -36,25 +36,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // ------------------------------------------------------------
-            // SIGNING RELEASE — descomente e configure quando tiver keystore
-            // Variáveis lidas pelo Codemagic via CM_KEYSTORE_PATH, etc.
-            // ------------------------------------------------------------
-            // signingConfig = signingConfigs.getByName("release")
         }
     }
-
-    // ------------------------------------------------------------
-    // SIGNING CONFIG para Release — descomente quando estiver pronto
-    // ------------------------------------------------------------
-    // signingConfigs {
-    //     create("release") {
-    //         storeFile = file(System.getenv("CM_KEYSTORE_PATH") ?: "keystore.jks")
-    //         storePassword = System.getenv("CM_KEYSTORE_PASSWORD") ?: ""
-    //         keyAlias = System.getenv("CM_KEY_ALIAS") ?: ""
-    //         keyPassword = System.getenv("CM_KEY_PASSWORD") ?: ""
-    //     }
-    // }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -87,7 +70,7 @@ android {
 }
 
 dependencies {
-    // ── Compose BOM (versão única controla todo o Compose) ──────────────────
+    // ── Compose BOM ──────────────────────────────────────────────────────────
     val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
@@ -125,23 +108,23 @@ dependencies {
     // ── Coroutines ───────────────────────────────────────────────────────────
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
-    // ── Retrofit + Gson (Dictionary API) ─────────────────────────────────────
+    // ── Retrofit + Gson ──────────────────────────────────────────────────────
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    // ── Coil (carregamento de imagens/capas) ──────────────────────────────────
+    // ── Coil ──────────────────────────────────────────────────────────────────
     implementation("io.coil-kt:coil-compose:2.6.0")
 
-    // ── Adaptive Layout (suporte a tablets) ──────────────────────────────────
-    implementation("androidx.compose.material3:material3-adaptive:1.0.0-alpha12")
+    // ── Adaptive Layout ──────────────────────────────────────────────────────
+    implementation("androidx.compose.material3.adaptive:adaptive:1.2.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
 
-    // ── DataStore (preferências de configurações) ────────────────────────────
+    // ── DataStore ────────────────────────────────────────────────────────────
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
-    // ── WorkManager (importação em background) ────────────────────────────────
+    // ── WorkManager ──────────────────────────────────────────────────────────
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.hilt:hilt-work:1.2.0")
     ksp("androidx.hilt:hilt-compiler:1.2.0")
@@ -151,6 +134,10 @@ dependencies {
 
     // ── Testes ───────────────────────────────────────────────────────────────
     testImplementation("junit:junit:4.13.2")
+    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+    testImplementation("com.google.truth:truth:1.4.2")
+
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

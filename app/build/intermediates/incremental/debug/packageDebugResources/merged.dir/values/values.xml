@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#1565C0</color>
+    <color name="splash_background">#1A1A2E</color>
+    <string name="app_name">Duda</string>
+    <string name="category_abandoned">Abandonado</string>
+    <string name="category_new">Novo</string>
+    <string name="category_read">Lido</string>
+    <string name="category_reading">Lendo</string>
+    <string name="font_family">Família de fonte</string>
+    <string name="font_size">Tamanho da fonte</string>
+    <string name="highlight_saved">Trecho salvo</string>
+    <string name="import_book">Importar livro</string>
+    <string name="import_books">Importar livros</string>
+    <string name="import_error">Erro ao importar arquivo</string>
+    <string name="import_success">Importado com sucesso</string>
+    <string name="importing">Importando…</string>
+    <string name="library_empty">Sua biblioteca está vazia.\nImporte um livro para começar.</string>
+    <string name="nav_categories">Categorias</string>
+    <string name="nav_library">Biblioteca</string>
+    <string name="nav_settings">Configurações</string>
+    <string name="nav_vocabulary">Vocabulário</string>
+    <string name="no_internet">Sem conexão — significado não disponível agora</string>
+    <string name="reader_error">Não foi possível abrir este arquivo</string>
+    <string name="search_books">Buscar livros…</string>
+    <string name="search_word">Buscar significado</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_system">Seguir sistema</string>
+    <string name="vocabulary_empty">Nenhuma palavra salva ainda.\nSegure uma palavra no leitor para pesquisar.</string>
+    <string name="word_not_found">Palavra não encontrada no dicionário</string>
+    <string name="word_saved">Palavra salva no vocabulário</string>
+    <style name="Theme.Duda" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/Theme.Duda.Main</item>
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+    </style>
+    <style name="Theme.Duda.Main" parent="Theme.Material3.DayNight.NoActionBar"/>
+</resources>
