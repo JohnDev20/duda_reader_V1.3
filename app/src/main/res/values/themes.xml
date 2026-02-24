@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Duda" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/Theme.Duda.Main</item>
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+    </style>
+
+    <style name="Theme.Duda.Main" parent="Theme.Material3.DayNight.NoActionBar" />
+</resources>

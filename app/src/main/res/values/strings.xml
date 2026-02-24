@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Duda</string>
+
+    <!-- Bottom Navigation -->
+    <string name="nav_library">Biblioteca</string>
+    <string name="nav_vocabulary">Vocabulário</string>
+    <string name="nav_categories">Categorias</string>
+    <string name="nav_settings">Configurações</string>
+
+    <!-- Book Categories -->
+    <string name="category_new">Novo</string>
+    <string name="category_reading">Lendo</string>
+    <string name="category_read">Lido</string>
+    <string name="category_abandoned">Abandonado</string>
+
+    <!-- Import -->
+    <string name="import_book">Importar livro</string>
+    <string name="import_books">Importar livros</string>
+    <string name="importing">Importando…</string>
+    <string name="import_success">Importado com sucesso</string>
+    <string name="import_error">Erro ao importar arquivo</string>
+
+    <!-- Reader -->
+    <string name="reader_error">Não foi possível abrir este arquivo</string>
+    <string name="search_word">Buscar significado</string>
+    <string name="word_saved">Palavra salva no vocabulário</string>
+    <string name="highlight_saved">Trecho salvo</string>
+    <string name="no_internet">Sem conexão — significado não disponível agora</string>
+    <string name="word_not_found">Palavra não encontrada no dicionário</string>
+
+    <!-- Vocabulary -->
+    <string name="vocabulary_empty">Nenhuma palavra salva ainda.\nSegure uma palavra no leitor para pesquisar.</string>
+
+    <!-- Library -->
+    <string name="library_empty">Sua biblioteca está vazia.\nImporte um livro para começar.</string>
+    <string name="search_books">Buscar livros…</string>
+
+    <!-- Settings -->
+    <string name="theme_system">Seguir sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Escuro</string>
+    <string name="font_size">Tamanho da fonte</string>
+    <string name="font_family">Família de fonte</string>
+</resources>

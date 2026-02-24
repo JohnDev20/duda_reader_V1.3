@@ -1,0 +1,151 @@
+########################################################################
+# codemagic.yaml — App Duda (Kotlin Android Nativo)
+# Versões fixadas (NÃO alterar sem testar o build completo):
+#   Gradle Wrapper : 8.7
+#   AGP            : 8.3.2
+#   Kotlin         : 1.9.24
+#   JDK            : 17
+#   compileSdk     : 34 / minSdk : 26 / targetSdk : 34
+########################################################################
+
+workflows:
+
+  # ──────────────────────────────────────────────────────────────────
+  # WORKFLOW 1 — Debug APK (ativo, dispara no push para main)
+  # ──────────────────────────────────────────────────────────────────
+  android-debug:
+    name: "Duda — Debug APK"
+    max_build_duration: 60  # minutos
+
+    instance_type: linux_x2  # Linux 64-bit, sem macOS (não precisa de emulador)
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+
+    environment:
+      java: 17                    # JDK 17 gerenciado pelo Codemagic
+      android_signing: []         # Sem signing no debug
+      groups:
+        - duda_env                # Variable Group no Codemagic (pode ficar vazio por enquanto)
+      vars:
+        GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=true"
+
+    scripts:
+      # 1. Verificar ambiente
+      - name: "Verificar versão do Java"
+        script: java -version
+
+      # 2. Tornar gradlew executável (obrigatório no Linux)
+      - name: "Permissão gradlew"
+        script: chmod +x ./gradlew
+
+      # 3. Verificar se o Gradle Wrapper está presente
+      - name: "Verificar Gradle Wrapper"
+        script: |
+          if [ ! -f "./gradle/wrapper/gradle-wrapper.jar" ]; then
+            echo "ERRO: gradle-wrapper.jar não encontrado!"
+            echo "Execute localmente: gradle wrapper --gradle-version 8.7"
+            echo "Depois commite: git add gradle/ gradlew gradlew.bat && git commit -m 'Add Gradle Wrapper'"
+            exit 1
+          fi
+
+      # 4. Verificar e instalar SDK components se necessário
+      - name: "Verificar Android SDK"
+        script: |
+          echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
+          echo "ANDROID_HOME: $ANDROID_HOME"
+          sdkmanager --list_installed 2>/dev/null | grep -E "build-tools|platforms" || true
+
+      # 5. Instalar build-tools e platform se não estiverem disponíveis
+      - name: "Instalar SDK components"
+        script: |
+          sdkmanager "platforms;android-34" "build-tools;34.0.0" --sdk_root="${ANDROID_SDK_ROOT}" || true
+
+      # 6. Build Debug APK
+      - name: "Build Debug APK"
+        script: |
+          ./gradlew assembleDebug \
+            --stacktrace \
+            --no-daemon \
+            -Dorg.gradle.jvmargs="-Xmx4g -XX:+UseParallelGC"
+
+      # 7. Verificar que o APK foi gerado
+      - name: "Verificar APK gerado"
+        script: |
+          APK_PATH="app/build/outputs/apk/debug/app-debug.apk"
+          if [ -f "$APK_PATH" ]; then
+            echo "✅ APK gerado com sucesso: $APK_PATH"
+            ls -lh "$APK_PATH"
+          else
+            echo "❌ APK NÃO encontrado! Verifique os logs acima."
+            find app/build -name "*.apk" 2>/dev/null || true
+            exit 1
+          fi
+
+    artifacts:
+      # APK disponível para download no painel do Codemagic
+      - app/build/outputs/apk/debug/app-debug.apk
+      # Logs de build para debug
+      - app/build/reports/**/*
+
+    # publishing:
+    #   # Notificação por email ao fim do build (opcional)
+    #   email:
+    #     recipients:
+    #       - seuemail@exemplo.com
+
+
+  # ──────────────────────────────────────────────────────────────────
+  # WORKFLOW 2 — Release AAB (DESATIVADO — descomente quando pronto)
+  # Para ativar: remova os comentários e configure as variáveis abaixo
+  #
+  # VARIÁVEIS NECESSÁRIAS no Variable Group "duda_release" do Codemagic:
+  #   CM_KEYSTORE          → conteúdo base64 do arquivo .jks
+  #   CM_KEYSTORE_PASSWORD → senha do keystore
+  #   CM_KEY_ALIAS         → alias da chave
+  #   CM_KEY_PASSWORD      → senha da chave
+  # ──────────────────────────────────────────────────────────────────
+
+  # android-release:
+  #   name: "Duda — Release AAB"
+  #   max_build_duration: 60
+  #   instance_type: linux_x2
+  #
+  #   triggering:
+  #     events:
+  #       - tag
+  #     tag_patterns:
+  #       - pattern: 'v*'
+  #         include: true
+  #
+  #   environment:
+  #     java: 17
+  #     groups:
+  #       - duda_release    # Variable Group com as variáveis de signing
+  #     android_signing:
+  #       - duda_keystore   # Nome do keystore configurado no Codemagic
+  #
+  #   scripts:
+  #     - name: "Permissão gradlew"
+  #       script: chmod +x ./gradlew
+  #
+  #     - name: "Instalar SDK components"
+  #       script: |
+  #         sdkmanager "platforms;android-34" "build-tools;34.0.0" \
+  #           --sdk_root="${ANDROID_SDK_ROOT}" || true
+  #
+  #     - name: "Build Release AAB"
+  #       script: |
+  #         ./gradlew bundleRelease \
+  #           --stacktrace \
+  #           --no-daemon \
+  #           -Dorg.gradle.jvmargs="-Xmx4g -XX:+UseParallelGC"
+  #
+  #   artifacts:
+  #     - app/build/outputs/bundle/release/app-release.aab
+  #     - app/build/outputs/mapping/release/mapping.txt
