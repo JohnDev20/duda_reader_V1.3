@@ -29,7 +29,6 @@ workflows:
 
     environment:
       java: 17                    # JDK 17 gerenciado pelo Codemagic
-      android_signing: []         # Sem signing no debug
       groups:
         - duda_env                # Variable Group no Codemagic (pode ficar vazio por enquanto)
       vars:
